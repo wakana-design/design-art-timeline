@@ -1,0 +1,991 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デザインとアートの年表 | Timeline of Art & Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f5f1;
+    --ink: #1b1a18;
+    --ink-soft: #55524c;
+    --line: #d8d5cd;
+    --display: "Zen Old Mincho", serif;
+    --body: "Zen Kaku Gothic New", sans-serif;
+    --latin: "Cormorant Garamond", serif;
+
+    /* 生まれ国の色（くすみ系で統一） */
+    --c-it: #a0765a;
+    --c-fr: #5f7490;
+    --c-be: #8a6f85;
+    --c-uk: #74815f;
+    --c-de: #6b7a80;
+    --c-es: #b3924f;
+    --c-ee: #5f8f81;
+    --c-jp: #a05a68;
+    --c-us: #99605c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.8;
+  }
+
+  header {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 24px 24px;
+    text-align: center;
+  }
+  .site-en {
+    font-family: var(--latin);
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(28px, 5.5vw, 44px);
+    letter-spacing: 0.12em;
+    margin: 10px 0 18px;
+  }
+  .lede {
+    font-size: 14px;
+    color: var(--ink-soft);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* 国別フィルター */
+  .filters {
+    display: flex;
+    justify-content: center;
+    gap: 6px 14px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .filters label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .filters input { accent-color: var(--ink); }
+  .filters .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--dot);
+  }
+  .note {
+    margin-top: 10px;
+    font-size: 11px;
+    color: #b0aca0;
+  }
+
+  .chart-outer {
+    max-width: 1400px;
+    margin: 24px auto 0;
+    padding: 48px 16px 0;
+    overflow-x: auto; /* 画面幅が足りない場合の保険 */
+  }
+  .chart { position: relative; margin: 0 auto; }
+
+  /* 年グリッドと中央の軸 */
+  .gridline-h {
+    position: absolute;
+    height: 1px;
+    background: #eceae3;
+  }
+  .gridline-h.major { background: var(--line); }
+  .axis-strip {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .year-label {
+    position: absolute;
+    text-align: center;
+    transform: translateY(-50%);
+    font-family: var(--latin);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: #b0aca0;
+    background: var(--paper);
+  }
+  .year-label.major { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+  .now-line {
+    position: absolute;
+    border-top: 1px dashed var(--ink-soft);
+  }
+  .now-label {
+    position: absolute;
+    text-align: center;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  /* グループヘッダー */
+  .col-head {
+    position: absolute;
+    top: -42px;
+    text-align: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .col-head.country {
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  /* 様式・運動タイル */
+  .tile {
+    position: absolute;
+    background: #fffefb;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    font-family: var(--body);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    overflow: hidden;
+  }
+  .tile:hover { border-color: var(--ink-soft); box-shadow: 0 2px 10px rgba(27,26,24,0.08); }
+  .tile:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .tile img {
+    display: block;
+    width: 100%;
+    height: 84px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--line);
+  }
+  .tile.noimg img { display: none; }
+  .tile .t-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    line-height: 1.45;
+    padding: 9px 10px;
+  }
+
+  /* 人物バー */
+  .p-bar {
+    position: absolute;
+    width: 9px;
+    border-radius: 5px;
+    opacity: 0.55;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .p-bar:hover { opacity: 0.85; }
+  .p-bar:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .p-bar.living {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30px);
+    mask-image: linear-gradient(to bottom, transparent, #000 30px);
+  }
+  .p-label {
+    position: absolute;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    white-space: nowrap;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  /* 詳細モーダル */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(27, 26, 24, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 10;
+  }
+  .overlay.show { display: flex; }
+  .modal {
+    background: #fffefb;
+    border: 1px solid var(--line);
+    max-width: 520px;
+    width: 100%;
+    max-height: 84vh;
+    overflow-y: auto;
+    padding: 26px 30px 26px;
+    position: relative;
+  }
+  .modal img.hero {
+    display: block;
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    background: #f0efe9;
+    margin-bottom: 18px;
+  }
+  .modal img.hero.hide { display: none; }
+  .modal .head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .modal .nm {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: 0.06em;
+  }
+  .modal .en {
+    font-family: var(--latin);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .modal .period {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .modal .origin {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+  .modal .origin::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--ink-soft);
+  }
+  .modal .origin .spread { font-weight: 400; color: var(--ink-soft); }
+  .modal .desc { font-size: 13.5px; margin-top: 14px; }
+  .modal dl {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .modal dt {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  .modal dd { margin-bottom: 10px; }
+  .modal dd:last-child { margin-bottom: 0; }
+  .modal .credit {
+    margin-top: 14px;
+    font-size: 10.5px;
+    color: #b0aca0;
+  }
+  .modal .close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 6px;
+    z-index: 1;
+  }
+  .modal .close:hover { color: var(--ink); }
+  .modal .close:focus-visible { outline: 2px solid var(--ink); }
+
+  footer {
+    text-align: center;
+    padding: 64px 24px 80px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+  footer .small { font-size: 11px; color: #b0aca0; margin-top: 6px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="site-en">A Timeline of Art &amp; Design</p>
+  <h1>デザインとアートの年表</h1>
+  <p class="lede">中央の年表を挟んで、左に地域ごとの様式・運動、右に生まれ国ごとの作家たちの生涯。上が現在、下へ行くほど過去へさかのぼります。タイルやバーをクリックすると詳細が開きます。</p>
+  <div class="filters" id="filters"></div>
+  <p class="note">タイルの縦位置はおおよその時代を示します。国のチェックで人物の表示を切り替えられます。</p>
+</header>
+
+<div class="chart-outer">
+  <div class="chart" id="chart"></div>
+</div>
+
+<footer>
+  <p>このサイトは学習・整理を目的とした個人プロジェクトです。</p>
+  <p class="small">画像：Wikimedia Commons（パブリックドメイン）</p>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="close" id="modal-close" aria-label="閉じる">×</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   設定
+   ============================================================ */
+const Y_TOP = 2030;
+const Y_BOTTOM = 1150;  // ゴシックの始まりまで
+const S = 4;            // 1年あたりのpx
+const NOW = 2026;
+const AXIS_W = 56;      // 中央の年表軸の幅
+const TILE_W = 118;
+const TILE_TXT_H = 58;
+const TILE_IMG_H = 142;
+const LANE_GAP = 10;    // タイルレーンの間隔
+const GROUP_GAP = 20;   // 地域グループの間隔
+const P_LANE = 13;
+const G_GAP = 12;
+
+/* Wikimedia Commons のファイル名から画像URLを作る */
+const wm = (file, w = 400) =>
+  `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${w}`;
+
+/* 地域グループ（様式・運動用）。lanes は横に並べる最大レーン数 */
+const MV_GROUPS = [
+  { id: "eu", label: "ヨーロッパ", lanes: 3 },
+  { id: "jp", label: "日本", lanes: 1 },
+  { id: "us", label: "アメリカ", lanes: 1 },
+  { id: "other", label: "その他", lanes: 1 }
+];
+
+/* 生まれ国グループ（人物用）。ee は詳細で nation を表示 */
+const COUNTRIES = [
+  { id: "it", label: "イタリア", color: "var(--c-it)" },
+  { id: "fr", label: "フランス", color: "var(--c-fr)" },
+  { id: "be", label: "ベルギー", color: "var(--c-be)" },
+  { id: "uk", label: "イギリス", color: "var(--c-uk)" },
+  { id: "de", label: "独・墺・蘭・スイス", color: "var(--c-de)" },
+  { id: "es", label: "スペイン", color: "var(--c-es)" },
+  { id: "ee", label: "その他欧州", color: "var(--c-ee)" },
+  { id: "jp", label: "日本", color: "var(--c-jp)" },
+  { id: "us", label: "アメリカ", color: "var(--c-us)" }
+];
+
+/* ============================================================
+   データ
+   s / e：表示上のおおよその期間。詳細では「◯◯年頃」と表示
+   region：eu / jp / us / other
+   img：Wikimedia Commons のファイル名（PD作品・実在確認済み）
+   people：{ n, b, d(存命はnull), c:生まれ国グループ, nation:国名(任意), work:代表作 }
+   ============================================================ */
+const MOVEMENTS = [
+  /* ---------- ヨーロッパ ---------- */
+  {
+    s: 1150, e: 1400, name: "ゴシック美術", en: "Gothic Art", region: "eu", img: null,
+    origin: "フランス（イル＝ド＝フランス地方）", spread: "→ 西ヨーロッパ各地",
+    desc: "尖頭アーチとステンドグラスによる垂直性と光の建築。神の世界へと視線を導く大聖堂建築が中心となった。",
+    works: "ノートルダム大聖堂、シャルトル大聖堂",
+    people: []
+  },
+  {
+    s: 1400, e: 1530, name: "ルネサンス", en: "Renaissance", region: "eu",
+    img: "Mona Lisa, by Leonardo da Vinci, from C2RMF retouched.jpg",
+    origin: "イタリア（フィレンツェ）", spread: "→ ヨーロッパ各地",
+    desc: "古典古代の再発見と人間中心主義。遠近法の確立により、絵画は「世界を映す窓」となった。",
+    works: "《モナ・リザ》《最後の晩餐》、システィーナ礼拝堂天井画",
+    people: [
+      { n: "ボッティチェリ", b: 1445, d: 1510, c: "it", work: "《ヴィーナスの誕生》《プリマヴェーラ》" },
+      { n: "レオナルド・ダ・ヴィンチ", b: 1452, d: 1519, c: "it", work: "《モナ・リザ》《最後の晩餐》" },
+      { n: "ミケランジェロ", b: 1475, d: 1564, c: "it", work: "システィーナ礼拝堂天井画、《ダヴィデ像》" },
+      { n: "ラファエロ", b: 1483, d: 1520, c: "it", work: "《アテナイの学堂》、聖母子像の数々" }
+    ]
+  },
+  {
+    s: 1520, e: 1600, name: "マニエリスム", en: "Mannerism", region: "eu", img: null,
+    origin: "イタリア", spread: "",
+    desc: "盛期ルネサンスの完成された様式を受け、引き伸ばされた人体や不安定な構図など、技巧的で洗練された表現を追求した。",
+    works: "《長い首の聖母》、エル・グレコの宗教画",
+    people: [
+      { n: "エル・グレコ", b: 1541, d: 1614, c: "ee", nation: "ギリシャ", work: "《オルガス伯の埋葬》《受胎告知》" }
+    ]
+  },
+  {
+    s: 1600, e: 1720, name: "バロック", en: "Baroque", region: "eu",
+    img: "The Night Watch - HD.jpg",
+    origin: "イタリア（ローマ）", spread: "→ ヨーロッパ各地",
+    desc: "劇的な明暗対比（キアロスクーロ）と動的な構図。カトリック改革を背景に、感情に訴える壮麗な表現が展開された。",
+    works: "《夜警》《ラス・メニーナス》、サン・ピエトロ大聖堂の列柱廊",
+    people: [
+      { n: "カラヴァッジョ", b: 1571, d: 1610, c: "it", work: "《聖マタイの召命》" },
+      { n: "ベルニーニ", b: 1598, d: 1680, c: "it", work: "サン・ピエトロ広場の列柱廊、《聖テレジアの法悦》" },
+      { n: "ベラスケス", b: 1599, d: 1660, c: "es", work: "《ラス・メニーナス》" },
+      { n: "レンブラント", b: 1606, d: 1669, c: "de", nation: "オランダ", work: "《夜警》、自画像の連作" }
+    ]
+  },
+  {
+    s: 1715, e: 1780, name: "ロココ", en: "Rococo", region: "eu",
+    img: "Fragonard, The Swing.jpg",
+    origin: "フランス（パリ）", spread: "",
+    desc: "宮廷文化を背景とした、軽やかで優美な装飾様式。淡い色彩と曲線的な装飾が室内装飾や絵画を彩った。",
+    works: "《シテール島への巡礼》《ぶらんこ》",
+    people: [
+      { n: "ヴァトー", b: 1684, d: 1721, c: "fr", work: "《シテール島への巡礼》" },
+      { n: "フラゴナール", b: 1732, d: 1806, c: "fr", work: "《ぶらんこ》" }
+    ]
+  },
+  {
+    s: 1760, e: 1830, name: "新古典主義", en: "Neoclassicism", region: "eu",
+    img: "Jacques-Louis David, Le Serment des Horaces.jpg",
+    origin: "フランス・イタリア", spread: "→ 欧米各地",
+    desc: "ポンペイ遺跡の発掘を背景に、古代ギリシャ・ローマの秩序と道徳を理想とした。ロココの装飾性への反動でもある。",
+    works: "《ホラティウス兄弟の誓い》《ナポレオンの戴冠式》",
+    people: [
+      { n: "ダヴィッド", b: 1748, d: 1825, c: "fr", work: "《ホラティウス兄弟の誓い》《ナポレオンの戴冠式》" }
+    ]
+  },
+  {
+    s: 1800, e: 1850, name: "ロマン主義", en: "Romanticism", region: "eu",
+    img: "Eugène Delacroix - Le 28 Juillet. La Liberté guidant le peuple.jpg",
+    origin: "フランス・ドイツ・イギリス", spread: "",
+    desc: "理性より感情と想像力を重んじ、劇的な題材や異国趣味、自然の崇高さを描いた。新古典主義と対をなす潮流。",
+    works: "《民衆を導く自由の女神》《メデューズ号の筏》",
+    people: [
+      { n: "ゴヤ", b: 1746, d: 1828, c: "es", work: "《裸のマハ》《1808年5月3日》" },
+      { n: "ドラクロワ", b: 1798, d: 1863, c: "fr", work: "《民衆を導く自由の女神》" }
+    ]
+  },
+  {
+    s: 1840, e: 1870, name: "写実主義", en: "Realism", region: "eu",
+    img: "Jean-François Millet - Gleaners - Google Art Project 2.jpg",
+    origin: "フランス", spread: "",
+    desc: "神話や歴史ではなく、農民や労働者など目の前の現実をありのままに描いた。近代絵画の出発点のひとつ。",
+    works: "《落穂拾い》《オルナンの埋葬》",
+    people: [
+      { n: "ミレー", b: 1814, d: 1875, c: "fr", work: "《落穂拾い》《晩鐘》" },
+      { n: "クールベ", b: 1819, d: 1877, c: "fr", work: "《オルナンの埋葬》《画家のアトリエ》" }
+    ]
+  },
+  {
+    s: 1850, e: 1900, name: "産業革命と万国博覧会", en: "Industrial Age", region: "eu", img: null,
+    origin: "イギリス（ロンドン）", spread: "",
+    desc: "機械による大量生産が始まり、「デザイン」という職能が意識され始めた転換点。1851年ロンドン万博の水晶宮はその象徴。",
+    works: "水晶宮（クリスタル・パレス）",
+    people: []
+  },
+  {
+    s: 1860, e: 1910, name: "アーツ・アンド・クラフツ", en: "Arts and Crafts", region: "eu",
+    img: "Morris Strawberry Thief 1883.jpg",
+    origin: "イギリス（ロンドン）", spread: "→ 欧米各地",
+    desc: "粗悪な工業製品への批判から、手仕事と生活の美を取り戻そうとした運動。近代デザイン思想の出発点とされる。",
+    works: "モリス商会の壁紙《いちご泥棒》、ケルムスコット・プレスの書籍",
+    people: [
+      { n: "ウィリアム・モリス", b: 1834, d: 1896, c: "uk", work: "壁紙《いちご泥棒》、ケルムスコット・プレス" }
+    ]
+  },
+  {
+    s: 1860, e: 1890, name: "印象派", en: "Impressionism", region: "eu",
+    img: "Monet - Impression, Sunrise.jpg",
+    origin: "フランス（パリ）", spread: "",
+    desc: "アトリエを出て戸外で描き、光と色彩の一瞬の印象を捉えた。チューブ絵具と写真の登場が背景にある。",
+    works: "《印象・日の出》《睡蓮》連作",
+    people: [
+      { n: "ドガ", b: 1834, d: 1917, c: "fr", work: "踊り子の連作" },
+      { n: "モネ", b: 1840, d: 1926, c: "fr", work: "《印象・日の出》《睡蓮》連作" },
+      { n: "ルノワール", b: 1841, d: 1919, c: "fr", work: "《ムーラン・ド・ラ・ギャレット》" }
+    ]
+  },
+  {
+    s: 1885, e: 1905, name: "ポスト印象派", en: "Post-Impressionism", region: "eu",
+    img: "Van Gogh - Starry Night - Google Art Project.jpg",
+    origin: "フランス", spread: "",
+    desc: "印象派の色彩を受け継ぎつつ、個人の内面や構造の探求へと向かった。20世紀美術への橋渡しとなる。",
+    works: "《星月夜》《サント・ヴィクトワール山》連作",
+    people: [
+      { n: "セザンヌ", b: 1839, d: 1906, c: "fr", work: "《サント・ヴィクトワール山》連作" },
+      { n: "ゴーギャン", b: 1848, d: 1903, c: "fr", work: "《我々はどこから来たのか…》" },
+      { n: "ゴッホ", b: 1853, d: 1890, c: "de", nation: "オランダ", work: "《星月夜》《ひまわり》" },
+      { n: "スーラ", b: 1859, d: 1891, c: "fr", work: "《グランド・ジャット島の日曜日の午後》" }
+    ]
+  },
+  {
+    s: 1890, e: 1914, name: "アール・ヌーヴォー", en: "Art Nouveau", region: "eu",
+    img: "Alphonse Mucha - Job Cigarettes 1.jpg",
+    origin: "ベルギー（ブリュッセル）", spread: "→ パリほか欧州各地",
+    desc: "植物をモチーフにした有機的な曲線の装飾様式。オルタのタッセル邸に始まり、ポスター、建築、家具、ガラス工芸まで生活全体を貫いた。",
+    works: "ミュシャのポスター、パリ地下鉄入口、サグラダ・ファミリア",
+    people: [
+      { n: "ガウディ", b: 1852, d: 1926, c: "es", work: "サグラダ・ファミリア、カサ・バトリョ" },
+      { n: "アルフォンス・ミュシャ", b: 1860, d: 1939, c: "ee", nation: "チェコ", work: "《ジスモンダ》などのポスター、《スラヴ叙事詩》" }
+    ]
+  },
+  {
+    s: 1897, e: 1905, name: "ウィーン分離派", en: "Vienna Secession", region: "eu",
+    img: "The Kiss - Gustav Klimt - Google Cultural Institute.jpg",
+    origin: "オーストリア（ウィーン）", spread: "",
+    desc: "アカデミーからの「分離」を掲げた総合芸術運動。金地の装飾性と象徴性が絵画・建築・工芸を横断した。",
+    works: "《接吻》、分離派会館（セセッション館）",
+    people: [
+      { n: "グスタフ・クリムト", b: 1862, d: 1918, c: "ee", nation: "オーストリア", work: "《接吻》《ユディト I》" }
+    ]
+  },
+  {
+    s: 1905, e: 1910, name: "フォーヴィスム", en: "Fauvism", region: "eu", img: null,
+    origin: "フランス（パリ）", spread: "",
+    desc: "「野獣（フォーヴ）」と評された、現実の色から解放された鮮烈な原色の絵画。20世紀最初の前衛運動とされる。",
+    works: "マティス《緑の筋のあるマティス夫人》《ダンス》",
+    people: [
+      { n: "アンリ・マティス", b: 1869, d: 1954, c: "fr", work: "《ダンス》、晩年の切り紙絵" }
+    ]
+  },
+  {
+    s: 1907, e: 1925, name: "キュビスム", en: "Cubism", region: "eu", img: null,
+    origin: "フランス（パリ）", spread: "",
+    desc: "対象を複数の視点から分解・再構成し、ルネサンス以来の遠近法を根本から解体した。20世紀美術最大の革新のひとつ。",
+    works: "《アビニヨンの娘たち》《ゲルニカ》（後期）",
+    people: [
+      { n: "パブロ・ピカソ", b: 1881, d: 1973, c: "es", work: "《アビニヨンの娘たち》《ゲルニカ》" },
+      { n: "ジョルジュ・ブラック", b: 1882, d: 1963, c: "fr", work: "《エスタックの家々》" }
+    ]
+  },
+  {
+    s: 1909, e: 1916, name: "未来派", en: "Futurism", region: "eu", img: null,
+    origin: "イタリア（ミラノ）", spread: "",
+    desc: "機械・速度・都市のダイナミズムを賛美した前衛運動。運動の軌跡を重ねて描き、伝統的な美の破壊を宣言した。",
+    works: "ボッチョーニ《空間における連続性の唯一の形態》",
+    people: []
+  },
+  {
+    s: 1916, e: 1924, name: "ダダ", en: "Dada", region: "eu", img: null,
+    origin: "スイス（チューリッヒ）", spread: "→ ベルリン、パリ、ニューヨーク",
+    desc: "第一次大戦への幻滅から生まれた反芸術運動。偶然性やレディメイドによって、芸術の定義そのものを問い直した。",
+    works: "デュシャン《泉》、コラージュとフォトモンタージュ",
+    people: [
+      { n: "マルセル・デュシャン", b: 1887, d: 1968, c: "fr", work: "《泉》《大ガラス》" }
+    ]
+  },
+  {
+    s: 1917, e: 1931, name: "デ・ステイル", en: "De Stijl", region: "eu",
+    img: "Piet Mondriaan, 1921 - Composition en rouge, jaune, bleu et noir.jpg",
+    origin: "オランダ（ライデン）", spread: "",
+    desc: "水平・垂直と三原色に還元された「新造形主義」。絵画から建築・家具まで、普遍的な調和の造形言語を目指した。",
+    works: "《赤と青の椅子》、シュレーダー邸",
+    people: [
+      { n: "ピート・モンドリアン", b: 1872, d: 1944, c: "de", nation: "オランダ", work: "《コンポジション》連作" },
+      { n: "ヘリット・リートフェルト", b: 1888, d: 1964, c: "de", nation: "オランダ", work: "《赤と青の椅子》、シュレーダー邸" }
+    ]
+  },
+  {
+    s: 1919, e: 1933, name: "バウハウス", en: "Bauhaus", region: "eu", img: null,
+    origin: "ドイツ（ヴァイマール → デッサウ）", spread: "→ 米国へ亡命・普及",
+    desc: "芸術と技術の統一を掲げた造形学校。機能主義にもとづく教育とプロダクトは、モダンデザインの原型となった。",
+    works: "ワシリーチェア、バウハウス・デッサウ校舎",
+    people: [
+      { n: "ヴァルター・グロピウス", b: 1883, d: 1969, c: "de", nation: "ドイツ", work: "バウハウス・デッサウ校舎" },
+      { n: "ミース・ファン・デル・ローエ", b: 1886, d: 1969, c: "de", nation: "ドイツ", work: "バルセロナ・チェア、シーグラム・ビル" }
+    ]
+  },
+  {
+    s: 1920, e: 1940, name: "アール・デコ", en: "Art Déco", region: "eu", img: null,
+    origin: "フランス（パリ）", spread: "→ 世界各地",
+    desc: "幾何学的で装飾的な様式。機械時代の速度感と豪華さを併せ持ち、建築からポスター、ジュエリーまで世界的に流行した。",
+    works: "クライスラー・ビル、カッサンドルの《ノルマンディー号》ポスター",
+    people: []
+  },
+  {
+    s: 1924, e: 1955, name: "シュルレアリスム", en: "Surrealism", region: "eu", img: null,
+    origin: "フランス（パリ）", spread: "",
+    desc: "夢や無意識の世界を探求した芸術運動。フロイトの精神分析を背景に、理性を超えた現実（超現実）の表現を試みた。",
+    works: "《記憶の固執》《イメージの裏切り》",
+    people: [
+      { n: "ルネ・マグリット", b: 1898, d: 1967, c: "be", work: "《イメージの裏切り》《ゴルコンダ》" },
+      { n: "サルバドール・ダリ", b: 1904, d: 1989, c: "es", work: "《記憶の固執》" }
+    ]
+  },
+  {
+    s: 1950, e: 1980, name: "スイス・スタイル", en: "Swiss Style", region: "eu", img: null,
+    origin: "スイス（チューリッヒ・バーゼル）", spread: "→ 国際様式として世界へ",
+    desc: "グリッドシステムとサンセリフ書体による客観的で明快なタイポグラフィ。今日のグラフィックデザインの基礎を築いた。",
+    works: "チューリッヒ・トーンハレのコンサートポスター、書体Helvetica（1957）",
+    people: [
+      { n: "ヨゼフ・ミューラー＝ブロックマン", b: 1914, d: 1996, c: "de", nation: "スイス", work: "トーンハレのポスター、『グリッドシステム』" }
+    ]
+  },
+  {
+    s: 1955, e: 1972, name: "ポップアート", en: "Pop Art", region: "eu", img: null,
+    origin: "イギリス（ロンドン）", spread: "→ アメリカで開花",
+    desc: "大量消費社会のイメージ——広告、漫画、商品——を美術に取り込んだ。高級芸術と大衆文化の境界を問い直した。",
+    works: "《キャンベル・スープ缶》《マリリン》",
+    people: [
+      { n: "ロイ・リキテンスタイン", b: 1923, d: 1997, c: "us", work: "ベンデイドットによる漫画絵画" },
+      { n: "アンディ・ウォーホル", b: 1928, d: 1987, c: "us", work: "《キャンベル・スープ缶》《マリリン》" }
+    ]
+  },
+  {
+    s: 1981, e: 1988, name: "メンフィス", en: "Memphis", region: "eu", img: null,
+    origin: "イタリア（ミラノ）", spread: "",
+    desc: "モダニズムの機能主義への反逆として、派手な色彩と柄、遊び心ある形態を打ち出したデザイン集団。ポストモダン・デザインの象徴。",
+    works: "本棚《カールトン》、ランプ《タヒチ》",
+    people: [
+      { n: "エットレ・ソットサス", b: 1917, d: 2007, c: "it", work: "本棚《カールトン》、オリベッティ《ヴァレンタイン》" }
+    ]
+  },
+
+  /* ---------- 日本 ---------- */
+  {
+    s: 1600, e: 1850, name: "琳派", en: "Rinpa", region: "jp", img: null,
+    origin: "日本（京都）", spread: "→ 江戸へ",
+    desc: "俵屋宗達に始まり、時代を超えて「私淑」で受け継がれた装飾芸術の系譜。金地の大胆な構図とたらし込みの技法が特徴。",
+    works: "《風神雷神図屏風》《燕子花図屏風》《紅白梅図屏風》",
+    people: [
+      { n: "俵屋宗達", b: 1570, d: 1640, c: "jp", work: "《風神雷神図屏風》（生没年は諸説あり）" },
+      { n: "尾形光琳", b: 1658, d: 1716, c: "jp", work: "《燕子花図屏風》《紅白梅図屏風》" }
+    ]
+  },
+  {
+    s: 1670, e: 1867, name: "浮世絵", en: "Ukiyo-e", region: "jp",
+    img: "The Great Wave off Kanagawa.jpg",
+    origin: "日本（江戸）", spread: "→ 19c末に欧州へ（ジャポニスム）",
+    desc: "庶民の風俗や役者、風景を描いた木版画。分業による量産と大胆な構図・平面性は、後の印象派やアール・ヌーヴォーに大きな影響を与えた。",
+    works: "《富嶽三十六景》《東海道五十三次》、歌麿の美人画",
+    people: [
+      { n: "葛飾北斎", b: 1760, d: 1849, c: "jp", work: "《富嶽三十六景》（《神奈川沖浪裏》）" },
+      { n: "歌川広重", b: 1797, d: 1858, c: "jp", work: "《東海道五十三次》" }
+    ]
+  },
+  {
+    s: 1890, e: 1955, name: "近代洋画", en: "Yōga", region: "jp", img: null,
+    origin: "日本（東京）", spread: "",
+    desc: "西洋の油彩技法を取り入れた日本の絵画。黒田清輝が外光派の明るい画風を持ち帰り、白馬会や東京美術学校を通じて定着させた。",
+    works: "《湖畔》《読書》、藤田嗣治の乳白色の裸婦",
+    people: [
+      { n: "黒田清輝", b: 1866, d: 1924, c: "jp", work: "《湖畔》《読書》" },
+      { n: "藤田嗣治", b: 1886, d: 1968, c: "jp", work: "乳白色の肌の裸婦像（エコール・ド・パリで活躍）" }
+    ]
+  },
+  {
+    s: 1926, e: 1961, name: "民藝運動", en: "Mingei Movement", region: "jp", img: null,
+    origin: "日本（東京）", spread: "",
+    desc: "無名の職人による日用品にこそ美が宿るとした「用の美」の思想。アーツ・アンド・クラフツと響き合う、日本発のデザイン思想。",
+    works: "日本民藝館、濱田庄司・河井寬次郎の陶芸",
+    people: [
+      { n: "柳宗悦", b: 1889, d: 1961, c: "jp", work: "民藝運動の提唱、日本民藝館の創設" }
+    ]
+  },
+
+  /* ---------- アメリカ ---------- */
+  {
+    s: 1943, e: 1960, name: "抽象表現主義", en: "Abstract Expressionism", region: "us", img: null,
+    origin: "アメリカ（ニューヨーク）", spread: "",
+    desc: "巨大なキャンバスに身体的な行為で描く、アメリカ発の抽象絵画。美術の中心がパリからニューヨークへ移る契機となった。",
+    works: "ポロックのドリッピング絵画、ロスコのカラーフィールド絵画",
+    people: [
+      { n: "マーク・ロスコ", b: 1903, d: 1970, c: "ee", nation: "ラトビア（現）", work: "カラーフィールドの連作" },
+      { n: "ジャクソン・ポロック", b: 1912, d: 1956, c: "us", work: "ドリッピングによる《ナンバー》連作" }
+    ]
+  },
+  {
+    s: 1960, e: 1975, name: "ミニマリズム", en: "Minimalism", region: "us", img: null,
+    origin: "アメリカ（ニューヨーク）", spread: "",
+    desc: "作家の感情や物語性を排し、素材と形態そのものへ還元した芸術。「見たままがすべて」という態度を徹底した。",
+    works: "ジャッドの《無題》連作（積層された箱）",
+    people: []
+  },
+  {
+    s: 1990, e: 2010, name: "デジタルデザイン", en: "Digital Design", region: "us", img: null,
+    origin: "アメリカ", spread: "→ 世界各地",
+    desc: "DTPとWebの普及により、デザインの現場がデジタルへ移行。画面のためのデザインという新しい領域が生まれた。",
+    works: "雑誌《Ray Gun》、初期のWebデザイン",
+    people: []
+  },
+  {
+    s: 2010, e: 2026, name: "フラットデザインとデザインシステム", en: "Flat Design & Design Systems", region: "us", img: null,
+    origin: "アメリカ（シリコンバレー）", spread: "→ 世界各地",
+    desc: "スキューオモーフィズムからフラットな表現へ。UIデザインの成熟とともに、一貫性を担保するデザインシステムの構築が標準となった。",
+    works: "iOS 7（2013）、Material Design（2014）",
+    people: []
+  }
+];
+
+/* ============================================================
+   描画
+   ============================================================ */
+const chart = document.getElementById("chart");
+const yPos = year => (Y_TOP - year) * S;
+
+/* 国別チェックボックス */
+const visible = {};
+COUNTRIES.forEach(c => visible[c.id] = true);
+const filters = document.getElementById("filters");
+COUNTRIES.forEach(c => {
+  const label = document.createElement("label");
+  label.innerHTML = `<input type="checkbox" checked data-id="${c.id}"><span class="dot" style="--dot:${c.color}"></span>${c.label}`;
+  label.querySelector("input").addEventListener("change", e => {
+    visible[c.id] = e.target.checked;
+    render();
+  });
+  filters.appendChild(label);
+});
+
+function render() {
+  chart.innerHTML = "";
+  let maxBottom = yPos(Y_BOTTOM);
+
+  /* --- 左側：様式・運動（地域グループごとにレーン詰め） --- */
+  let gx = 0;
+  const tiles = []; // 後で描画（幅確定後）
+  MV_GROUPS.forEach(group => {
+    const items = MOVEMENTS.filter(m => m.region === group.id);
+    if (items.length === 0) return;
+
+    const lanes = new Array(group.lanes).fill(-1e9); // 各レーンの最下端
+    items.sort((a, b) => b.e - a.e).forEach(m => {
+      const tileH = m.img ? TILE_IMG_H : TILE_TXT_H;
+      const desired = yPos(m.e);
+      /* 押し下げが最小になるレーンを選ぶ */
+      let best = 0, bestTop = Infinity;
+      lanes.forEach((bottom, i) => {
+        const top = Math.max(desired, bottom + 10);
+        if (top < bestTop) { bestTop = top; best = i; }
+      });
+      lanes[best] = bestTop + tileH;
+      maxBottom = Math.max(maxBottom, bestTop + tileH);
+      tiles.push({ m, x: gx + best * (TILE_W + LANE_GAP), top: bestTop, h: tileH });
+    });
+
+    const groupW = group.lanes * (TILE_W + LANE_GAP) - LANE_GAP;
+    tiles.push({ head: group.label, x: gx, w: groupW });
+    gx += groupW + GROUP_GAP;
+  });
+  const mvWidth = gx - GROUP_GAP;
+  const axisX = mvWidth + 18;
+
+  /* --- 右側：人物（チェックの入った国のみ） --- */
+  const peopleStart = axisX + AXIS_W + 20;
+  let px = peopleStart;
+  const peopleEls = [];
+  COUNTRIES.forEach(country => {
+    if (!visible[country.id]) return;
+    const items = [];
+    MOVEMENTS.forEach(m => (m.people || []).forEach(p => {
+      if (p.c !== country.id) return;
+      const end = p.d ?? NOW;
+      items.push({ p, m, top: yPos(end), bottom: yPos(p.b), living: !p.d });
+    }));
+    if (items.length === 0) return;
+
+    items.sort((a, b) => a.top - b.top);
+    const laneBottoms = [];
+    items.forEach(it => {
+      let lane = laneBottoms.findIndex(b => b + 6 <= it.top);
+      if (lane === -1) { lane = laneBottoms.length; laneBottoms.push(0); }
+      laneBottoms[lane] = it.bottom;
+      it.lane = lane;
+    });
+    const groupW = laneBottoms.length * P_LANE;
+
+    peopleEls.push({ head: country.label, x: px, w: Math.max(groupW - 3, 22), color: country.color });
+    items.forEach(it => {
+      peopleEls.push({ ...it, x: px + it.lane * P_LANE, country });
+      maxBottom = Math.max(maxBottom, it.bottom);
+    });
+    px += groupW + G_GAP;
+  });
+  const totalWidth = px === peopleStart ? axisX + AXIS_W : px;
+
+  /* --- 年グリッド（中央の軸に年ラベル） --- */
+  for (let y = Y_TOP; y >= Y_BOTTOM; y -= 25) {
+    const isMajor = y % 100 === 0;
+    const line = document.createElement("div");
+    line.className = "gridline-h" + (isMajor ? " major" : "");
+    line.style.top = yPos(y) + "px";
+    line.style.left = "0px";
+    line.style.width = totalWidth + "px";
+    chart.appendChild(line);
+
+    const label = document.createElement("div");
+    label.className = "year-label" + (isMajor ? " major" : "");
+    label.style.top = yPos(y) + "px";
+    label.style.left = axisX + "px";
+    label.style.width = AXIS_W + "px";
+    label.textContent = y;
+    chart.appendChild(label);
+  }
+  const nowLine = document.createElement("div");
+  nowLine.className = "now-line";
+  nowLine.style.top = yPos(NOW) + "px";
+  nowLine.style.left = "0px";
+  nowLine.style.width = totalWidth + "px";
+  chart.appendChild(nowLine);
+  const nowLabel = document.createElement("div");
+  nowLabel.className = "now-label";
+  nowLabel.style.top = yPos(NOW) + "px";
+  nowLabel.style.left = axisX + "px";
+  nowLabel.style.width = AXIS_W + "px";
+  nowLabel.textContent = "今";
+  chart.appendChild(nowLabel);
+
+  /* --- タイルとヘッダーを描画（グリッドの上に載せる） --- */
+  tiles.forEach(t => {
+    if (t.head) {
+      const head = document.createElement("div");
+      head.className = "col-head";
+      head.style.left = t.x + "px";
+      head.style.width = t.w + "px";
+      head.textContent = t.head;
+      chart.appendChild(head);
+      return;
+    }
+    const m = t.m;
+    const tile = document.createElement("button");
+    tile.className = "tile" + (m.img ? "" : " noimg");
+    tile.style.left = t.x + "px";
+    tile.style.top = t.top + "px";
+    tile.style.width = TILE_W + "px";
+    tile.style.height = t.h + "px";
+    tile.setAttribute("aria-label", `${m.name}の詳細を開く`);
+    tile.innerHTML = `
+      ${m.img ? `<img src="${wm(m.img)}" alt="" loading="lazy">` : ""}
+      <div class="t-name">${m.name}</div>`;
+    const img = tile.querySelector("img");
+    if (img) img.onerror = () => {
+      tile.classList.add("noimg");
+      tile.style.height = TILE_TXT_H + "px";
+    };
+    tile.addEventListener("click", () => openMovement(m));
+    chart.appendChild(tile);
+  });
+
+  /* --- 人物バーとヘッダー --- */
+  peopleEls.forEach(el => {
+    if (el.head) {
+      const head = document.createElement("div");
+      head.className = "col-head country";
+      head.style.left = el.x + "px";
+      head.style.width = el.w + "px";
+      head.style.borderBottomColor = el.color;
+      head.textContent = el.head;
+      chart.appendChild(head);
+      return;
+    }
+    const { p, m, top, bottom, living, x, country } = el;
+    const bar = document.createElement("button");
+    bar.className = "p-bar" + (living ? " living" : "");
+    bar.style.top = top + "px";
+    bar.style.height = (bottom - top) + "px";
+    bar.style.left = x + "px";
+    bar.style.background = country.color;
+    bar.setAttribute("aria-label", `${p.n}（${p.b}–${p.d ?? "存命"}）の詳細を開く`);
+    bar.addEventListener("click", () => openPerson(p, m, country));
+    chart.appendChild(bar);
+
+    const label = document.createElement("div");
+    label.className = "p-label";
+    label.style.top = (top + 6) + "px";
+    label.style.left = (x + 4.5) + "px";
+    label.textContent = p.n;
+    chart.appendChild(label);
+  });
+
+  chart.style.width = totalWidth + "px";
+  chart.style.height = (maxBottom + 20) + "px";
+}
+
+/* ============================================================
+   詳細モーダル
+   ============================================================ */
+const overlay = document.getElementById("overlay");
+const modalBody = document.getElementById("modal-body");
+
+function showModal(html) {
+  modalBody.innerHTML = html;
+  const hero = modalBody.querySelector("img.hero");
+  if (hero) hero.onerror = () => hero.classList.add("hide");
+  overlay.classList.add("show");
+  document.getElementById("modal-close").focus();
+}
+
+function openMovement(m) {
+  showModal(`
+    ${m.img ? `<img class="hero" src="${wm(m.img, 640)}" alt="${m.name}の代表的な作品">` : ""}
+    <div class="head">
+      <span class="nm" id="modal-title">${m.name}</span>
+      <span class="en">${m.en}</span>
+    </div>
+    <div class="period">${m.s}年頃 – ${m.e}年頃</div>
+    <div><span class="origin">発祥：${m.origin}${m.spread ? ` <span class="spread">${m.spread}</span>` : ""}</span></div>
+    <p class="desc">${m.desc}</p>
+    <dl>
+      <dt>代表的な人物</dt><dd>${(m.people || []).map(p => p.n).join("、") || "—"}</dd>
+      <dt>代表作・事例</dt><dd>${m.works}</dd>
+    </dl>
+    ${m.img ? `<p class="credit">画像：Wikimedia Commons（パブリックドメイン）</p>` : ""}`);
+}
+
+function openPerson(p, m, country) {
+  const birthplace = p.nation ?? country.label;
+  showModal(`
+    ${p.img ? `<img class="hero" src="${wm(p.img, 640)}" alt="${p.n}">` : ""}
+    <div class="head">
+      <span class="nm" id="modal-title">${p.n}</span>
+      <span class="en">${p.b} – ${p.d ?? ""}</span>
+    </div>
+    <div><span class="origin">生まれ：${birthplace}</span></div>
+    <dl>
+      <dt>関連する様式・運動</dt><dd>${m.name}（${m.en}）</dd>
+      <dt>代表作</dt><dd>${p.work}</dd>
+    </dl>
+    ${p.img ? `<p class="credit">画像：Wikimedia Commons（パブリックドメイン）</p>` : ""}`);
+}
+
+function closeModal() { overlay.classList.remove("show"); }
+document.getElementById("modal-close").addEventListener("click", closeModal);
+overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+render();
+</script>
+</body>
+</html>
